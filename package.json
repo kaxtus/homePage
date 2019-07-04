@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "eslint-loader": "^2.1.2",
+    "leaflet": "^1.5.1",
+    "vue": "^2.6.10",
+    "vuetify": "^1.5.16"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.0",
