@@ -78,7 +78,6 @@ thing("Yo.");
 
     var num_cols = canvas_width / resolution; //This value is the number of columns in the grid.
     var num_rows = canvas_height / resolution; //This is number of rows.
-    var speck_count = 5000; //This determines how many particles will be made.
 
     var vec_cells = []; //The array that will contain the grid cells
     var particles = []; //The array that will contain the particles
@@ -105,9 +104,6 @@ thing("Yo.");
 
     }
     var backGround = null;
-    function updateBackground(img){
-        backGround = document.getElementById(img);
-    }
     /*
     This is the main function. It is triggered to start the process of constructing the
     the grid and creating the particles, attaching event handlers, and starting the
@@ -133,7 +129,7 @@ thing("Yo.");
         less one, because array elements are numbered beginning at zero.
         */
 
-        let i,u;
+        let i;
         const increase = Math.floor(imgData.data.length/PARTICLES_CONSTANT);
         for (i = 0; i < imgData.data.length; i += +4 * randomGen(increase,increase+10)) {
 
@@ -147,15 +143,8 @@ thing("Yo.");
 
                 particles.push(new particle(randomGen(c_width/2,canvas.width-c_width/2), randomGen(300, 600), target, colour));
                 velocity.push({vx: randomGen(1,3),vy: randomGen(1,3)});
-                if(x < c_width/2) {
 
-                }
-                else{
-//                    particles.push(new particle(canvas_width-1, canvas_height/2, target, colour));
-
-                }
             }
-            u+=1;
         }
         //This loops through the count of columns.
         for (let col = 0; col < num_cols; col++) {
@@ -173,7 +162,7 @@ thing("Yo.");
                 width and height of "column 1, row 1" are counted in so that the top-left
                 corner of the new grid cell is at the bottom right of the other cell.
                 */
-                var cell_data = new cell(col * resolution, row * resolution, resolution)
+                let cell_data = new cell(col * resolution, row * resolution, resolution)
 
                 //This pushes the cell object into the grid array.
                 vec_cells[col][row] = cell_data;
@@ -189,7 +178,7 @@ thing("Yo.");
         }
 
         /*
-        These loops move through the rows and columns of the grid array again and set variables
+        These loops move through the rows and columns of the grid array again and set letiables
         in each cell object that will hold the directional references to neighboring cells.
         For example, let's say the loop is currently on this cell:
 
@@ -197,7 +186,7 @@ thing("Yo.");
         OOOXO
         OOOOO
 
-        These variables will hold the references to neighboring cells so you only need to
+        These letiables will hold the references to neighboring cells so you only need to
         use "up" to refer to the cell above the one you're currently on.
         */
         for (let col = 0; col < num_cols; col++) {
@@ -205,13 +194,13 @@ thing("Yo.");
             for (let row = 0; row < num_rows; row++) {
 
                 /*
-                This variable holds the reference to the current cell in the grid. When you
+                This letiable holds the reference to the current cell in the grid. When you
                 refer to an element in an array, it doesn't copy that value into the new
-                variable; the variable stores a "link" or reference to that spot in the array.
-                If the value in the array is changed, the value of this variable would change
+                letiable; the letiable stores a "link" or reference to that spot in the array.
+                If the value in the array is changed, the value of this letiable would change
                 also, and vice-versa.
                 */
-                var cell_data = vec_cells[col][row];
+                let cell_data = vec_cells[col][row];
 
                 /*
                 Each of these lines has a ternary expression. A ternary expression is similar
@@ -223,15 +212,15 @@ thing("Yo.");
                 around to the last row. This is done so that momentum that is pushed to the edge
                 of the canvas is "wrapped" to the opposite side.
                 */
-                var row_up = (row - 1 >= 0) ? row - 1 : num_rows - 1;
-                var col_left = (col - 1 >= 0) ? col - 1 : num_cols - 1;
-                var col_right = (col + 1 < num_cols) ? col + 1 : 0;
+                let row_up = (row - 1 >= 0) ? row - 1 : num_rows - 1;
+                let col_left = (col - 1 >= 0) ? col - 1 : num_cols - 1;
+                let col_right = (col + 1 < num_cols) ? col + 1 : 0;
 
                 //Get the reference to the cell on the row above.
-                var up = vec_cells[col][row_up];
-                var left = vec_cells[col_left][row];
-                var up_left = vec_cells[col_left][row_up];
-                var up_right = vec_cells[col_right][row_up];
+                let up = vec_cells[col][row_up];
+                let left = vec_cells[col_left][row];
+                let up_left = vec_cells[col_left][row_up];
+                let up_right = vec_cells[col_right][row_up];
 
                 /*
                 Set the current cell's "up", "left", "up_left" and "up_right" attributes to the
@@ -258,7 +247,7 @@ thing("Yo.");
         These lines create triggers that fire when certain events happen. For
         instance, when you move your mouse, the mouse_move_handler() function
         will run and will be passed the event object reference into it's "e"
-        variable. Something to note, the mousemove event doesn't necessarily
+        letiable. Something to note, the mousemove event doesn't necessarily
         fire for *every* mouse coordinate position; the mouse movement is
         sampled at a certain rate, meaning that it's checked periodically, and
         if the mouse has moved, the event is fired and the current coordinates
@@ -297,7 +286,7 @@ thing("Yo.");
             return{x:0.01,y:0.01};
         }
 
-       return normalize(a,b);
+        return normalize(a,b);
     }
     /*
     calculate distance between two points
@@ -311,21 +300,21 @@ thing("Yo.");
         //Loops through all of the particles in the array
         for (let i = 0; i < particles.length; i++) {
 
-            //Sets this variable to the current particle so we can refer to the particle easier.
-            var p = particles[i];
+            //Sets this letiable to the current particle so we can refer to the particle easier.
+            let p = particles[i];
 
             //If the particle's X and Y coordinates are within the bounds of the canvas...
-            if (p.x >= 0 && p.x < canvas_width && p.y >= 0 && p.y < canvas_height) {
+            if (p.x >= 0 && p.x < canvas_width && p.y >= 0 && p.y < canvas_height ) {
 
                 /*
                 These lines divide the X and Y values by the size of each cell. This number is
                 then parsed to a whole number to determine which grid cell the particle is above.
                 */
-                var col = parseInt(p.x / resolution);
-                var row = parseInt(p.y / resolution);
+                let col = parseInt(p.x / resolution);
+                let row = parseInt(p.y / resolution);
 
                 //Same as above, store reference to cell
-                var cell_data = vec_cells[col][row];
+                let cell_data = vec_cells[col][row];
 
                 /*
                 These values are percentages. They represent the percentage of the distance across
@@ -336,8 +325,8 @@ thing("Yo.");
                 coordinates by the resolution value. This number can only be smaller than the
                 resolution, so we divide it by the resolution to get the percentage.
                 */
-                var ax = (p.x % resolution) / resolution;
-                var ay = (p.y % resolution) / resolution;
+                let ax = (p.x % resolution) / resolution;
+                let ay = (p.y % resolution) / resolution;
 
                 /*
                 These lines subtract the decimal from 1 to reverse it (e.g. 100% - 75% = 25%), multiply
@@ -369,14 +358,14 @@ thing("Yo.");
 
                 //For each axis, this gets the distance between the old position of the particle and it's new position.
 
-                var dx = p.px - p.x;
-                var dy = p.py - p.y;
+                let dx = p.px - p.x;
+                let dy = p.py - p.y;
 
                 //Using the Pythagorean theorum (A^2 + B^2 = C^2), this determines the distance the particle travelled.
-                var dist = Math.sqrt(dx * dx + dy * dy);
+                let dist = Math.sqrt(dx * dx + dy * dy);
 
                 //This line generates a random value between 0 and 0.5
-                var limit = Math.random() * 0.5;
+                let limit = Math.random() * 0.5;
 
                 //If the distance the particle has travelled this frame is greater than the random value...
                 if (distance(p, p.target) > 3) {
@@ -413,18 +402,18 @@ thing("Yo.");
                     ctx.strokeStyle = p.colour;
                     ctx.stroke(); //Draw the path to the canvas
                 }
-                    //This updates the previous X and Y coordinates of the particle to the new ones for the next loop.
-                    p.px = p.x;
-                    p.py = p.y;
-                } else {
-                    //If the particle's X and Y coordinates are outside the bounds of the canvas...
+                //This updates the previous X and Y coordinates of the particle to the new ones for the next loop.
+                p.px = p.x;
+                p.py = p.y;
+            } else {
+                //If the particle's X and Y coordinates are outside the bounds of the canvas...
 
-                    //Place the particle at a random location on the canvas
-                    p.x = p.px = Math.random() * canvas_width;
-                    p.y = p.py = Math.random() * canvas_height;
+                //Place the particle at a random location on the canvas
+                p.x = p.px = Math.random() * canvas_width;
+                p.y = p.py = Math.random() * canvas_height;
 
 
-                }
+            }
 
             //These lines divide the particle's velocity in half everytime it loops, slowing them over time.
             p.xv *= 0.5;
@@ -433,10 +422,10 @@ thing("Yo.");
     }
     function update_circle() {
         //Loops through all of the particles in the array
-        for (i = 0; i < particles.length; i++) {
+        for (let i = 0; i < particles.length; i++) {
 
-            //Sets this variable to the current particle so we can refer to the particle easier.
-            var p = particles[i];
+            //Sets this letiable to the current particle so we can refer to the particle easier.
+            let p = particles[i];
 
             //If the particle's X and Y coordinates are within the bounds of the canvas...
             if (p.x >= 0 && p.x < canvas_width && p.y >= 0 && p.y < canvas_height) {
@@ -445,11 +434,11 @@ thing("Yo.");
                 These lines divide the X and Y values by the size of each cell. This number is
                 then parsed to a whole number to determine which grid cell the particle is above.
                 */
-                var col = parseInt(p.x / resolution);
-                var row = parseInt(p.y / resolution);
+                let col = parseInt(p.x / resolution);
+                let row = parseInt(p.y / resolution);
 
                 //Same as above, store reference to cell
-                var cell_data = vec_cells[col][row];
+                let cell_data = vec_cells[col][row];
 
                 /*
                 These values are percentages. They represent the percentage of the distance across
@@ -460,8 +449,8 @@ thing("Yo.");
                 coordinates by the resolution value. This number can only be smaller than the
                 resolution, so we divide it by the resolution to get the percentage.
                 */
-                var ax = (p.x % resolution) / resolution;
-                var ay = (p.y % resolution) / resolution;
+                let ax = (p.x % resolution) / resolution;
+                let ay = (p.y % resolution) / resolution;
 
                 /*
                 These lines subtract the decimal from 1 to reverse it (e.g. 100% - 75% = 25%), multiply
@@ -493,14 +482,14 @@ thing("Yo.");
 
                 //For each axis, this gets the distance between the old position of the particle and it's new position.
 
-                var dx = p.px - p.x;
-                var dy = p.py - p.y;
+                let dx = p.px - p.x;
+                let dy = p.py - p.y;
 
                 //Using the Pythagorean theorum (A^2 + B^2 = C^2), this determines the distance the particle travelled.
-                var dist = Math.sqrt(dx * dx + dy * dy);
+                let dist = Math.sqrt(dx * dx + dy * dy);
 
                 //This line generates a random value between 0 and 0.5
-                var limit = Math.random() * 0.5;
+                let limit = Math.random() * 0.5;
 
                 //If the distance the particle has travelled this frame is greater than the random value...
                 if(p.target.x - p.x <= 3 && p.target.y - p.y <= 3) {
@@ -558,26 +547,24 @@ thing("Yo.");
         This calculates the velocity of the mouse by getting the distance between the last coordinates and
         the new ones. The coordinates will be further apart depending on how fast the mouse is moving.
         */
-        var mouse_xv = mouse.x - mouse.px;
-        var mouse_yv = mouse.y - mouse.py;
-        var end = new Date().getTime();
+        let end = new Date().getTime();
         if(end - start > 10000) {
             nextPage();
             start = end;
         }
         //Loops through all of the columns
         for (let i = 0; i < vec_cells.length; i++) {
-            var cell_datas = vec_cells[i];
+            let cell_datas = vec_cells[i];
 
             //Loops through all of the rows
             for (let j = 0; j < cell_datas.length; j++) {
 
                 //References the current cell
-                var cell_data = cell_datas[j];
+                let cell_data = cell_datas[j];
 
                 //If the mouse button is down, updates the cell velocity using the mouse velocity
                 if (mouse.down && change.state || Math.abs(change.target.x - change.start.x)  > 20 || Math.abs(change.target.y - change.start.y)  > 20 ) {
-                   // change_cell_velocity(cell_data, mouse_xv, mouse_yv, pen_size);
+                    // change_cell_velocity(cell_data, mouse_xv, mouse_yv, pen_size);
                     change_cell_velocity_custom(cell_data, pDirection(change.start, change.target).x*100, pDirection(change.start, change.target).y*100, pen_size);
                     change.start.x += pDirection(change.start, change.target).x*0.001;
                     change.start.y += pDirection(change.start, change.target).y*0.001;
@@ -586,10 +573,10 @@ thing("Yo.");
 
 
                 }else if(change.state){
-                        change = changes.pop()
-                        //if(!change.state)
-                        //    update_particle_target();
-                        change.update();
+                    change = changes.pop()
+                    //if(!change.state)
+                    //    update_particle_target();
+                    change.update();
                 }
                 //This updates the pressure values for the cell.
                 update_pressure(cell_data);
@@ -617,10 +604,10 @@ thing("Yo.");
         */
 
         for (let i = 0; i < vec_cells.length; i++) {
-            var cell_datas = vec_cells[i];
+            let cell_datas = vec_cells[i];
 
             for (let j = 0; j < cell_datas.length; j++) {
-                var cell_data = cell_datas[j];
+                let cell_data = cell_datas[j];
 
                 update_velocity(cell_data);
 
@@ -637,35 +624,6 @@ thing("Yo.");
     }
 
 
-    /*
-    This function changes the cell velocity of an individual cell by first determining whether the cell is
-    close enough to the mouse cursor to be affected, and then if it is, by calculating the effect that mouse velocity
-    has on the cell's velocity.
-    */
-    function change_cell_velocity(cell_data, mvelX, mvelY, pen_size) {
-        //This gets the distance between the cell and the mouse cursor.
-        var dx = cell_data.x - mouse.x;
-        var dy = cell_data.y - mouse.y;
-        var dist = Math.sqrt(dy * dy + dx * dx);
-
-        //If the distance is less than the radius...
-        if (dist < pen_size) {
-
-            //If the distance is very small, set it to the pen_size.
-            if (dist < 4) {
-                dist = pen_size;
-            }
-
-            //Calculate the magnitude of the mouse's effect (closer is stronger)
-            var power = pen_size / dist;
-
-            /*
-            Apply the velocity to the cell by multiplying the power by the mouse velocity and adding it to the cell velocity
-            */
-            cell_data.xv += mvelX * power;
-            cell_data.yv += mvelY * power;
-        }
-    }
 
     /*
        This function changes the cell velocity of an individual cell by first determining whether the cell is
@@ -674,9 +632,9 @@ thing("Yo.");
        */
     function change_cell_velocity_custom(cell_data, mvelX, mvelY, pen_size) {
         //This gets the distance between the cell and the mouse cursor.
-        var dx = cell_data.x - change.start.x;
-        var dy = cell_data.y - change.start.y;
-        var dist = Math.sqrt(dy * dy + dx * dx);
+        let dx = cell_data.x - change.start.x;
+        let dy = cell_data.y - change.start.y;
+        let dist = Math.sqrt(dy * dy + dx * dx);
 
         //If the distance is less than the radius...
         if (dist < pen_size) {
@@ -687,7 +645,7 @@ thing("Yo.");
             }
 
             //Calculate the magnitude of the mouse's effect (closer is stronger)
-            var power = pen_size / dist;
+            let power = pen_size / dist;
 
             /*
             Apply the velocity to the cell by multiplying the power by the mouse velocity and adding it to the cell velocity
@@ -704,7 +662,7 @@ thing("Yo.");
     function update_pressure(cell_data) {
 
         //This calculates the collective pressure on the X axis by summing the surrounding velocities
-        var pressure_x = (
+        let pressure_x = (
             cell_data.up_left.xv * 0.5 //Divided in half because it's diagonal
             + cell_data.left.xv
             + cell_data.down_left.xv * 0.5 //Same
@@ -714,7 +672,7 @@ thing("Yo.");
         );
 
         //This does the same for the Y axis.
-        var pressure_y = (
+        let pressure_y = (
             cell_data.up_left.yv * 0.5
             + cell_data.up.yv
             + cell_data.up_right.yv * 0.5
@@ -804,7 +762,6 @@ thing("Yo.");
 
     }
 
-
     /*
     This function is called whenever the mouse button is pressed. The event object is passed to
     this function when it's called.
@@ -827,9 +784,9 @@ thing("Yo.");
             changes.push(x)
         }
     }
-    var imagesArray=['logoColorSmall','logo4','logoColorSmall','logo3','logoColorSmall','logo2'];
-    var imagesArrayLength = imagesArray.length;
-    var  start = new Date().getTime();
+    let imagesArray=['logoColorSmall','logo4','logoColorSmall','logo3','logoColorSmall','logo2'];
+    let imagesArrayLength = imagesArray.length;
+    let  start = new Date().getTime();
     function update_particle_target(){
         const img = loadImageData(imagesArray.pop());
         if(changeCnt%2!==0)
@@ -838,8 +795,8 @@ thing("Yo.");
             update_particle_image(img.imageData,img.width, 300);
     }
     function update_particle_image(imgData, width, height){
-        let u = 0;
         const increase = Math.floor(imgData.data.length/PARTICLES_CONSTANT);
+        let u = 0;
         while(u< particles.length){
             for (let i = 0; i < imgData.data.length && u < particles.length; i += 4 * randomGen(increase, increase+10)) {
                 if(imgData.data[i+3] !==0){
@@ -847,8 +804,7 @@ thing("Yo.");
                     const y = Math.floor((i / 4) / width);
                     const target = {x:x+(canvas.width-width)/2,y:y + 30+height};
 
-                    const colour = {r: imgData.data[i], g: imgData.data[i+1], b: imgData.data[i+2]};
-                  //  particles[u].colour = rgbToHex(colour.r,colour.g,colour.b);
+                    //  particles[u].colour = rgbToHex(colour.r,colour.g,colour.b);
                     particles[u].target = target;
                     u+=1;
                 }
@@ -857,56 +813,18 @@ thing("Yo.");
             }
         }
     }
-    function update_particle_stars(){
-        let u = 0;
-        let i = 0;
-            for (i = 0; i <  particles.length && i< 1000; i += 1) {
-                    const target = {x:(randomGen(0,canvas.width)),y:randomGen(10,randomGen(canvas.height/6,canvas.height/4))};
-                    const colour = {r: 255, g: 255, b: 255};
-                    particles[i].colour = rgbToHex(colour.r,colour.g,colour.b);
-                    particles[i].target = target;
-            }
-        while (particles.length > 700) {
-            particles.pop()
-
-        }
-        console.log(particles.length);
-
-    }
     //let changes = [{state:false, start:{x:1000,y:1000},target:{x:1256,y:1700}}, {state:true, start:{x:700,y:1300},target:{x:1256, y:1700}}, {state:true, start:{x:700,y:1000},target:{x:1500,y:1200}}]
     let change = {state:false, start:{x:0,y:0},target:{x:0,y:0}};
     let changeCnt = 1;
     function mouse_down_handler(e) {
         e.preventDefault(); //Prevents the default action from happening (e.g. navigation)
-        mouse.down = true; //Sets the mouse object's "down" value to true
-        if(changeCnt===3 && false){
-            start = new Date().getTime();
-            updateBackground('background');
-            update_particle_stars();
-        }
-        if(changeCnt%2!==0){
-            start = new Date().getTime();
-            setChanges();
-            change.state = true;
-            change = changes.pop();
-        }
-        if(changeCnt%2===0){
-            start = new Date().getTime();
-            setChanges();
-            change = changes.pop();
 
-        }
 //        if(change)
 
-        changeCnt +=1;
     }
     function nextPage(){
         if(changeCnt > imagesArrayLength)
             return;
-        if(changeCnt===3 && false){
-            updateBackground('background');
-            update_particle_stars();
-        }
         if(changeCnt%2!==0){
             setChanges();
             change.state = true;
@@ -949,26 +867,6 @@ thing("Yo.");
     }
 
 
-    /*
-    This function is called whenever one of the coordinates have changed. The coordinates are checked by the
-    browser at intervals.
-    */
-    function touch_move_handler(e) {
-        mouse.px = mouse.x;
-        mouse.py = mouse.y;
-
-        //This line gets the coordinates for where the canvas is positioned on the screen.
-        var rect = canvas.getBoundingClientRect();
-
-        /*
-        And this sets the mouse coordinates to where the first touch is. Since we're using pageX
-        and pageY, we need to subtract the top and left offset of the canvas so the values are correct.
-        */
-
-
-        mouse.x = e.touches[0].pageX - rect.left;
-        mouse.y = e.touches[0].pageY - rect.top;
-    }
 
 
     /*
@@ -990,4 +888,4 @@ window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequ
 
 
 //And this line calls the init() function defined above to start the script.
-export default Fluid;
+export default window.Fluid;
